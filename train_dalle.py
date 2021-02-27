@@ -185,7 +185,18 @@ dl = DataLoader(ds, batch_size = BATCH_SIZE, shuffle = True, drop_last = True)
 
 # initialize DALL-E
 
-dalle = DALLE(**dalle_params).cuda()
+#dalle = DALLE(**dalle_params).cuda()
+dalle = DALLE(
+    dim = 1024,
+    vae = vae,
+    num_text_tokens = 10000,
+    text_seq_len = 256,
+    depth = 64,
+    heads = 16,
+    reversible = True,
+    attn_types = ('full', 'axial_row', 'axial_col', 'conv_like') 
+).cuda()
+
 
 if RESUME:
     dalle.load_state_dict(weights)
